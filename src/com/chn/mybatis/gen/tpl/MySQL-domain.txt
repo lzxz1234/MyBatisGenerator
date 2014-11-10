@@ -1,0 +1,48 @@
+package ${package}.vo;
+
+import java.util.*;
+import java.sql.*;
+
+public class ${table.upperStartClassName} {
+    <% for(each in table.keys) { %>
+    private ${each.javaType} ${each.lowerStartFieldName};
+    <% } %>
+    <% for(each in table.columns) { %>
+    private ${each.javaType} ${each.lowerStartFieldName};
+    <% } %>
+    
+<%     for(eachColumn in table.links) { 
+           var targetTable = eachColumn.tableTrans; %>
+    private ${targetTable.upperStartClassName} ${targetTable.lowerStartClassName};
+<%     } %>
+    <% for(each in table.keys) { %>
+    public ${each.javaType} get${each.upperStartFieldName}() {
+    
+        return this.${each.lowerStartFieldName};
+    }
+    public void set${each.upperStartFieldName}(${each.javaType} ${each.lowerStartFieldName}) {
+    
+        this.${each.lowerStartFieldName} = ${each.lowerStartFieldName};
+    }
+    <% } %>
+    <% for(each in table.columns) { %>
+    public ${each.javaType} get${each.upperStartFieldName}() {
+    
+        return this.${each.lowerStartFieldName};
+    }
+    public void set${each.upperStartFieldName}(${each.javaType} ${each.lowerStartFieldName}) {
+    
+        this.${each.lowerStartFieldName} = ${each.lowerStartFieldName};
+    }
+    <% } %>
+<%     for(eachColumn in table.links) { 
+           var targetTable = eachColumn.tableTrans; %>
+    public ${targetTable.upperStartClassName} get${targetTable.upperStartClassName} {
+        return this.${targetTable.lowerStartClassName};
+    }
+    public void set${targetTable.upperStartClassName}(${targetTable.upperStartClassName} ${targetTable.lowerStartClassName}) {
+        this.${targetTable.lowerStartClassName} = ${targetTable.lowerStartClassName};
+    }
+<%     } %>
+    
+}

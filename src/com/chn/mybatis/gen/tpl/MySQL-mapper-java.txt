@@ -1,0 +1,28 @@
+package ${package};
+
+import ${package}.vo.*;
+import java.util.*;
+import java.sql.*;
+
+public interface ${table.upperStartClassName }Mapper {
+    <% 
+       var idStr = "";
+       for(key in table.keys) { 
+           idStr = idStr + ", ";
+           idStr = idStr + key.javaType + " ";
+           idStr = idStr + key.lowerStartFieldName;
+       } 
+       idStr = strutil.subString(idStr, 2);
+    %>public ${table.upperStartClassName} get(${idStr});
+    
+    public void set(${table.upperStartClassName} obj);
+    
+    public void add(${table.upperStartClassName} obj);
+    
+    public void remove(${idStr});
+    
+    public List<${table.upperStartClassName}> list(Map<String, Object> params);
+    
+    public Integer count(Map<String, Object> params);
+    
+}
