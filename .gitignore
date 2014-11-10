@@ -61,4 +61,5 @@ $RECYCLE.BIN/
 .classpath
 .project
 .settings
+conf
 gen
