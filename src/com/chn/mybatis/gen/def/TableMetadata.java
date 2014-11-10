@@ -9,6 +9,11 @@
  */
 package com.chn.mybatis.gen.def;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.chn.mybatis.gen.utils.IteratorableHashMap;
 
 /**
@@ -19,26 +24,48 @@ import com.chn.mybatis.gen.utils.IteratorableHashMap;
  */
 public class TableMetadata {
 
+    private static Map<String, TableMetadata> map = new HashMap<>();
+    
+    public static TableMetadata find(String tableName) {
+        
+        TableMetadata result = map.get(tableName);
+        if(result == null) {
+            result = new TableMetadata();
+            result.setTableName(tableName);
+            map.put(tableName, result);
+        }
+        return result;
+    }
+    
+    public static Map<String, TableMetadata> getAllTables() {
+        
+        return map;
+    }
+    
+    private TableMetadata() {
+        
+    }
+    
     private String tableCat    ;//TABLE_CAT 
     private String tableSchema ;//TABLE_SCHEM 
     private String tableName   ;//TABLE_NAME 
     private String tableType   ;//TABLE_TYPE 
     private String remarks     ;//REMARKS 
     
-    private IteratorableHashMap<String, ColumnMetadata> links = new IteratorableHashMap<>();
-    private IteratorableHashMap<String, ColumnMetadata> keys = new IteratorableHashMap<>();
+    private IteratorableHashMap<String, PKColumnMetadata> keys = new IteratorableHashMap<>();
     private IteratorableHashMap<String, ColumnMetadata> columns = new IteratorableHashMap<>();
+    private List<LinkMetadata> links = new ArrayList<>();
     
-    public void addLink(String columName, ColumnMetadata foreign) {
-        this.links.put(columName, foreign);
+    public void addLink(LinkMetadata link) {
+        this.links.add(link);
     }
-    public IteratorableHashMap<String, ColumnMetadata> getLinks() {
+    public List<LinkMetadata> getLinks() {
         return this.links;
     }
-    public void addKey(ColumnMetadata key) {
+    public void addKey(PKColumnMetadata key) {
         this.keys.put(key.getColumnName(), key);
     }
-    public IteratorableHashMap<String, ColumnMetadata> getKeys() {
+    public IteratorableHashMap<String, PKColumnMetadata> getKeys() {
         return this.keys;
     }
     public ColumnMetadata getKey(String name) {
@@ -51,8 +78,15 @@ public class TableMetadata {
         return this.columns;
     }
     public ColumnMetadata getColumn(String name) {
-        return this.columns.get(name);
+        
+        ColumnMetadata result = this.columns.get(name);
+        if(result == null) 
+            result = this.keys.get(name);
+        if(result == null) 
+            throw new RuntimeException(String.format("表【%s】不存在列【%s】", this.getTableName(), name));
+        return result;
     }
+    
     public String getTableCat() {
         return tableCat;
     }

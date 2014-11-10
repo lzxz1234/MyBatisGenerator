@@ -17,8 +17,8 @@
             , ${table.alias}.${column.name} AS ${column.alias}
 <% 
                } 
-               for(eachColumn in table.links) { 
-                 var targetTable = eachColumn.tableTrans;  %>
+               for(eachLink in table.links) { 
+                 var targetTable = eachLink.targetTableTrans;  %>
             <if test="link${targetTable.upperStartClassName} != null">
                 <% for(column in targetTable.columns) { %>
                 , ${targetTable.alias}.${column.name} AS ${column.alias}
@@ -35,8 +35,8 @@
     <% for(column in table.columns) { %>
         <column column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
     <% } %>
-<%     for(eachColumn in table.links) { 
-           var targetTable = eachColumn.tableTrans; %>
+<%     for(eachLink in table.links) { 
+           var targetTable = eachLink.targetTableTrans; %>
         <association property="${targetTable.lowerStartClassName}" javaType="${targetTable.upperStartClassName}">
         <% for(key in targetTable.keys) { %>
             <id column="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
@@ -88,16 +88,16 @@
     <select id="list" parameterType="map" resultMap="result">
         SELECT <include refid="colList" />
           FROM ${table.name} ${table.alias}
-<%          for(eachColumn in table.links) { 
-             var targetTable = eachColumn.tableTrans; %>
+<%          for(eachLink in table.links) { 
+             var targetTable = eachLink.targetTableTrans; %>
         <if test="link${targetTable.upperStartClassName} != null">
-     LEFT JOIN ${targetTable.name } ${targetTable.alias} ON ${table.alias}.${eachColumn.identify}=${targetTable.alias}.${eachColumn.name}
+     LEFT JOIN ${targetTable.name } ${targetTable.alias} ON ${table.alias}.${eachLink.fromColumnName}=${targetTable.alias}.${eachLink.toColumnName}
         </if>
 <%           } %>
         <where>
             <% for(key in table.keys) { %>
             <if test="${key.lowerStartFieldName} != null">AND ${table.alias}.${key.name} = #{${key.lowerStartFieldName}}</if><% if(key.javaType == "String") {%>
-            <if test="${key.lowerStartFieldName}LK != null">AND ${table.alias}.${key.name} LIKE #{${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || each.javaType == "Long" || each.javaType == "Double") {%>
+            <if test="${key.lowerStartFieldName}LK != null">AND ${table.alias}.${key.name} LIKE #{${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || key.javaType == "Long" || key.javaType == "Double") {%>
             <if test="${key.lowerStartFieldName}GT != null">AND ${table.alias}.${key.name} > #{${key.lowerStartFieldName}GT}</if><if test="${key.lowerStartFieldName}LT != null">AND #{${key.lowerStartFieldName}LT} > ${table.alias}.${key.name}</if><% } %>
 <%             } 
                for(each in table.columns) { %>
@@ -107,11 +107,11 @@
             <if test="${each.lowerStartFieldName}LT != null">AND #{${each.lowerStartFieldName}LT} > ${table.alias}.${each.name}</if><%} %>
             <% } %>
 
-<%             for(eachColumn in table.links) { 
-                   var targetTable = eachColumn.tableTrans; 
+<%             for(eachLink in table.links) { 
+                   var targetTable = eachLink.targetTableTrans; 
                    for(key in targetTable.keys) { %>
             <if test="${targetTable.lowerStartClassName}${key.upperStartFieldName} != null">AND ${targetTable.alias}.${key.name} = #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}}</if><% if(key.javaType == "String") {%>
-            <if test="${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK != null">AND ${targetTable.alias}.${key.name} LIKE #{${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || each.javaType == "Long" || each.javaType == "Double") {%>
+            <if test="${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK != null">AND ${targetTable.alias}.${key.name} LIKE #{${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || key.javaType == "Long" || key.javaType == "Double") {%>
             <if test="${targetTable.lowerStartClassName}${key.UpperStartFieldName}GT != null">AND ${targetTable.alias}.${key.name} > #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}GT}</if>
             <if test="${targetTable.lowerStartClassName}${key.UpperStartFieldName}LT != null">AND #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}LT} > ${targetTable.alias}.${key.name}</if><%} %>
 <%                 } 
@@ -130,10 +130,16 @@
     <select id="count" parameterType="map" resultType="int">
         SELECT COUNT(1) 
           FROM ${table.name} ${table.alias}
+<%          for(eachLink in table.links) { 
+             var targetTable = eachLink.targetTableTrans; %>
+        <if test="link${targetTable.upperStartClassName} != null">
+     LEFT JOIN ${targetTable.name } ${targetTable.alias} ON ${table.alias}.${eachLink.fromColumnName}=${targetTable.alias}.${eachLink.toColumnName}
+        </if>
+<%           } %>
         <where>
             <% for(key in table.keys) { %>
             <if test="${key.lowerStartFieldName} != null">AND ${table.alias}.${key.name} = #{${key.lowerStartFieldName}}</if><% if(key.javaType == "String") {%>
-            <if test="${key.lowerStartFieldName}LK != null">AND ${table.alias}.${key.name} LIKE #{${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || each.javaType == "Long" || each.javaType == "Double") {%>
+            <if test="${key.lowerStartFieldName}LK != null">AND ${table.alias}.${key.name} LIKE #{${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || key.javaType == "Long" || key.javaType == "Double") {%>
             <if test="${key.lowerStartFieldName}GT != null">AND ${table.alias}.${key.name} > #{${key.lowerStartFieldName}GT}</if><if test="${key.lowerStartFieldName}LT != null">AND #{${key.lowerStartFieldName}LT} > ${table.alias}.${key.name}</if><% } %>
 <%             } 
                for(each in table.columns) { %>
@@ -143,11 +149,11 @@
             <if test="${each.lowerStartFieldName}LT != null">AND #{${each.lowerStartFieldName}LT} > ${table.alias}.${each.name}</if><%} %>
             <% } %>
 
-<%             for(eachColumn in table.links) { 
-                   var targetTable = eachColumn.tableTrans; 
+<%             for(eachLink in table.links) { 
+                   var targetTable = eachLink.targetTableTrans; 
                    for(key in targetTable.keys) { %>
             <if test="${targetTable.lowerStartClassName}${key.upperStartFieldName} != null">AND ${targetTable.alias}.${key.name} = #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}}</if><% if(key.javaType == "String") {%>
-            <if test="${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK != null">AND ${targetTable.alias}.${key.name} LIKE #{${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || each.javaType == "Long" || each.javaType == "Double") {%>
+            <if test="${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK != null">AND ${targetTable.alias}.${key.name} LIKE #{${targetTable.lowerStartClassName}${key.lowerStartFieldName}LK}</if><%} if(key.javaType == "Integer" || key.javaType == "Long" || key.javaType == "Double") {%>
             <if test="${targetTable.lowerStartClassName}${key.UpperStartFieldName}GT != null">AND ${targetTable.alias}.${key.name} > #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}GT}</if>
             <if test="${targetTable.lowerStartClassName}${key.UpperStartFieldName}LT != null">AND #{${targetTable.lowerStartClassName}${key.UpperStartFieldName}LT} > ${targetTable.alias}.${key.name}</if><%} %>
 <%                 } 

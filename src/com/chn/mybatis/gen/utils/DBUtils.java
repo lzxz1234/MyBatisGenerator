@@ -14,11 +14,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.chn.mybatis.gen.def.ColumnMetadata;
+import com.chn.mybatis.gen.def.LinkMetadata;
+import com.chn.mybatis.gen.def.PKColumnMetadata;
 import com.chn.mybatis.gen.def.TableMetadata;
 import com.chn.mybatis.gen.utils.ConfigUtils.Cfg;
 
@@ -94,78 +95,70 @@ public class DBUtils {
         return dbmd;
     }
     
-    public static IteratorableHashMap<String, TableMetadata> getTableList(DatabaseMetaData dbmd) {
+    public static void loadMetadata(DatabaseMetaData dbmd) {
 
-        IteratorableHashMap<String, TableMetadata> tables = new IteratorableHashMap<>();
         String[] types = { "TABLE" };
 
         ResultSet rs = null;
         try {
             rs = dbmd.getTables(null, null, null, types);
             while (rs.next()) 
-                solveTable(rs, tables);
+                solveTable(rs);
             
             rs = dbmd.getColumns(null, null, null, null);
             while(rs.next()) 
-                solveColumn(rs, tables);
+                solveColumn(rs);
             
-            for(TableMetadata table : tables) {
+            for(TableMetadata table : TableMetadata.getAllTables().values()) {
                 rs = dbmd.getPrimaryKeys(null, null, table.getTableName());
                 while(rs.next())
-                    solvePrimaryKey(rs, tables);
+                    solvePrimaryKey(rs);
                 rs = dbmd.getImportedKeys(null, null, table.getTableName());
                 while(rs.next()) 
-                    solveForeignKey(rs, tables);
+                    solveForeignKey(rs);
             }
         } catch (SQLException e) {
             throw new RuntimeException("获取表信息出错", e);
         }
-        return tables;
-
     }
     
-    private static void solveForeignKey(ResultSet rs, Map<String, TableMetadata> tables) 
-            throws SQLException {
+    private static void solveForeignKey(ResultSet rs) throws SQLException {
         
         String targetTableName = rs.getString("PKTABLE_NAME");
         String targetColumnName = rs.getString("PKCOLUMN_NAME");
         String tableName = rs.getString("FKTABLE_NAME");
         String columnName = rs.getString("FKCOLUMN_NAME");
         
-        ColumnMetadata foreignColumn = tables.get(targetTableName).getColumn(targetColumnName);
-        if(foreignColumn == null) foreignColumn = tables.get(targetTableName).getKey(targetColumnName);
-        tables.get(tableName).addLink(columnName, foreignColumn);
+        ColumnMetadata fromColumn = TableMetadata.find(tableName).getColumn(columnName);
+        ColumnMetadata toColumn = TableMetadata.find(targetTableName).getColumn(targetColumnName);
+        
+        TableMetadata.find(tableName).addLink(new LinkMetadata(fromColumn, toColumn));
         log.info(String.format("  表【%s】中的列【%s】引用表【%s】的列【%s】", 
                 tableName, columnName, targetTableName, targetColumnName));
     }
     
-    private static void solvePrimaryKey(ResultSet rs, Map<String, TableMetadata> tables) 
-            throws SQLException {
+    private static void solvePrimaryKey(ResultSet rs) throws SQLException {
         
         String tableName = rs.getString("TABLE_NAME");
         String columnName = rs.getString("COLUMN_NAME");
         
-        TableMetadata tableMetadata = tables.get(tableName);
+        TableMetadata tableMetadata = TableMetadata.find(tableName);
         ColumnMetadata keyColumn = tableMetadata.getColumns().remove(columnName);
-        tableMetadata.getKeys().put(columnName, keyColumn);
+        tableMetadata.getKeys().put(columnName, PKColumnMetadata.from(keyColumn));
         log.debug(String.format("  表【%s】中的【%s】列标记为主键", tableName, columnName));
     }
     
-    private static void solveTable(ResultSet rs, Map<String, TableMetadata> tables)
-            throws SQLException {
+    private static void solveTable(ResultSet rs) throws SQLException {
         
-        TableMetadata table = new TableMetadata();
+        TableMetadata table = TableMetadata.find(rs.getString("TABLE_NAME ".trim()));
         table.setTableCat   (rs.getString("TABLE_CAT  ".trim()));
         table.setTableSchema(rs.getString("TABLE_SCHEM".trim()));
-        table.setTableName  (rs.getString("TABLE_NAME ".trim()));
         table.setTableType  (rs.getString("TABLE_TYPE ".trim()));
         table.setRemarks    (rs.getString("REMARKS    ".trim()));
-        tables.put(table.getTableName(), table);
         log.debug(String.format("  发现表【%s】", table.getTableName()));
     }
     
-    private static void solveColumn(ResultSet rs, Map<String, TableMetadata> tables) 
-            throws SQLException {
+    private static void solveColumn(ResultSet rs) throws SQLException {
         
         ColumnMetadata column = new ColumnMetadata();
         column.setTableCat         (rs.getString("TABLE_CAT         ".trim()));
@@ -188,8 +181,7 @@ public class DBUtils {
         column.setScopeTable       (rs.getString("SCOPE_TABLE       ".trim()));
         column.setSourceDataType   (rs.getShort ("SOURCE_DATA_TYPE  ".trim()));
         column.setIsAutoincrement  (rs.getString("IS_AUTOINCREMENT  ".trim()));
-        TableMetadata targetTable = tables.get(column.getTableName());
-        column.setTableMetadata(targetTable);
+        TableMetadata targetTable = TableMetadata.find(column.getTableName());
         targetTable.addColumn(column);
         log.debug(String.format("  表【%s】发现列【%s】，列类型为【%s】", 
                 column.getTableName(), column.getColumnName(), column.getTypeName()));

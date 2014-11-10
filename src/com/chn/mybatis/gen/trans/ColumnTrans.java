@@ -20,14 +20,11 @@ import com.chn.mybatis.gen.utils.SqlTypeUtils;
  */
 public class ColumnTrans extends Trans {
 
-    private String identify;
     private String alias;
     private ColumnMetadata meta;
-    private TableTrans tableTrans;
     
-    public ColumnTrans(String identify, ColumnMetadata meta) {
+    public ColumnTrans(ColumnMetadata meta) {
         
-        this.identify = identify;
         this.meta = meta;
         this.alias = this.createColumnAlias();
     }
@@ -44,8 +41,8 @@ public class ColumnTrans extends Trans {
     }
     
     public TableTrans getTableTrans() {
-        
-        return tableTrans == null ? tableTrans = new TableTrans(meta.getTableMetadata()) : tableTrans;
+
+        return TableTrans.find(meta.getTableName());
     }
     
     public String getJdbcType() {
@@ -68,8 +65,4 @@ public class ColumnTrans extends Trans {
         return alias;
     }
     
-    public String getIdentify() {
-        
-        return this.identify;
-    }
 }

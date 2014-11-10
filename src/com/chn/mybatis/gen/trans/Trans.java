@@ -21,16 +21,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Trans {
 
-    private static AtomicInteger atomic = new AtomicInteger();
+    private static AtomicInteger tableSeq = new AtomicInteger();
+    private static AtomicInteger columnSeq = new AtomicInteger();
     
-    protected String createTableAlias() {
+    protected synchronized String createTableAlias() {
         
-        return "T" + atomic.incrementAndGet();
+        return "T" + tableSeq.incrementAndGet();
     }
     
     protected String createColumnAlias() {
         
-        return "C" + atomic.incrementAndGet();
+        return "C" + columnSeq.incrementAndGet();
     }
     
     protected String underscoreToCamelCase(String src) {

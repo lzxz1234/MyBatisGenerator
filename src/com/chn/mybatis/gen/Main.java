@@ -29,7 +29,7 @@ import com.chn.mybatis.gen.utils.DBUtils;
  */
 public class Main {
     
-    public static final String ROOT_FILE_PATH = Main.class.getResource("/").getPath();
+    public static final String ROOT_FILE_PATH = Main.class.getResource("/").getPath().replace("%20", " ");
     public static final String PACKAGE_PATH = ROOT_FILE_PATH + "com/chn/mybatis/gen/tpl";
     public static final File GEN_FOLDER = new File(ROOT_FILE_PATH + "../gen");
     public static final File VO_FOLDER = new File(GEN_FOLDER, "vo");
@@ -43,43 +43,45 @@ public class Main {
         DatabaseMetaData dbmd = DBUtils.getDatabaseMetaData(conn);
         
         String dbType = dbmd.getDatabaseProductName();
-        TableMetadata meta = DBUtils.getTableList(dbmd).get("user");
+        DBUtils.loadMetadata(dbmd);
         
-        generateXml(meta, dbType);
-        generateInterface(meta, dbType);
-        generateDomain(meta, dbType);
+        for(String tableName : TableMetadata.getAllTables().keySet()) {
+            generateXml(tableName, dbType);
+            generateInterface(tableName, dbType);
+            generateDomain(tableName, dbType);
+        }
     }
     
-    private static void generateXml(TableMetadata meta, String dbType) throws Exception {
+    private static void generateXml(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-mapper-xml.txt");
         if(template == null) throw new RuntimeException(String.format("未支持的数据库类型【%s】", dbType));
         
-        TableTrans trans = new TableTrans(meta);
+        TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);
         template.set("table", trans);
         FileUtils.write(new File(GEN_FOLDER, trans.getUpperStartClassName() + "Mapper.xml"), 
                         template.getTextAsString());
     }
     
-    private static void generateInterface(TableMetadata meta, String dbType) throws Exception {
+    private static void generateInterface(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-mapper-java.txt");
         if(template == null) throw new RuntimeException(String.format("未支持的数据库类型【%s】", dbType));
         
-        TableTrans trans = new TableTrans(meta);
+        TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);
         template.set("table", trans);
         FileUtils.write(new File(GEN_FOLDER, trans.getUpperStartClassName() + "Mapper.java"), 
                         template.getTextAsString());
     }
     
-    private static void generateDomain(TableMetadata meta, String dbType) throws Exception {
+    private static void generateDomain(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-domain.txt");
         if(template == null) throw new RuntimeException(String.format("未支持的数据库类型【%s】", dbType));
         
-        TableTrans trans = new TableTrans(meta);
+        TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);
         template.set("table", trans);
         FileUtils.write(new File(GEN_FOLDER, "/vo/" + trans.getUpperStartClassName() + ".java"), 

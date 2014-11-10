@@ -12,7 +12,8 @@ public interface ${table.upperStartClassName }Mapper {
            idStr = idStr + key.javaType + " ";
            idStr = idStr + key.lowerStartFieldName;
        } 
-       idStr = strutil.subString(idStr, 2);
+       if(strutil.length(idStr) > 2)
+           idStr = strutil.subString(idStr, 2);
     %>public ${table.upperStartClassName} get(${idStr});
     
     public void set(${table.upperStartClassName} obj);

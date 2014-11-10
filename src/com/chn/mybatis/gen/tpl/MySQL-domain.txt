@@ -12,7 +12,7 @@ public class ${table.upperStartClassName} {
     <% } %>
     
 <%     for(eachColumn in table.links) { 
-           var targetTable = eachColumn.tableTrans; %>
+           var targetTable = eachColumn.targetTableTrans; %>
     private ${targetTable.upperStartClassName} ${targetTable.lowerStartClassName};
 <%     } %>
     <% for(each in table.keys) { %>
@@ -36,7 +36,7 @@ public class ${table.upperStartClassName} {
     }
     <% } %>
 <%     for(eachColumn in table.links) { 
-           var targetTable = eachColumn.tableTrans; %>
+           var targetTable = eachColumn.targetTableTrans; %>
     public ${targetTable.upperStartClassName} get${targetTable.upperStartClassName} {
         return this.${targetTable.lowerStartClassName};
     }

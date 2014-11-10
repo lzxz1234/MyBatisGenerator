@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.chn.mybatis.gen.def.ColumnMetadata;
+import com.chn.mybatis.gen.def.LinkMetadata;
 import com.chn.mybatis.gen.def.TableMetadata;
 import com.chn.mybatis.gen.utils.IteratorableHashMap;
 
@@ -26,17 +28,30 @@ import com.chn.mybatis.gen.utils.IteratorableHashMap;
  */
 public class TableTrans extends Trans {
 
+    private static Map<String, TableTrans> map = new ConcurrentHashMap<>();
+    
     private String alias;
     private TableMetadata meta;
     
-    private List<ColumnTrans> linkList;
+    private List<LinkTrans> linkList;
     private List<ColumnTrans> keyList;
     private List<ColumnTrans> columnList;
     
-    public TableTrans(TableMetadata meta) {
+    private TableTrans(TableMetadata meta) {
         
         this.meta = meta;
         this.alias = this.createTableAlias();
+    }
+    
+    public static TableTrans find(String tableName) {
+        
+        TableTrans result = map.get(tableName);
+        if(result == null) {
+            TableMetadata meta = TableMetadata.find(tableName);
+            result = new TableTrans(meta);
+            map.put(meta.getTableName(), result);
+        }
+        return result;
     }
     
     public String getUpperStartClassName() {
@@ -65,24 +80,33 @@ public class TableTrans extends Trans {
         return columnList == null ? columnList = buildTrans(meta.getColumns()) : columnList;
     }
     
-    public List<ColumnTrans> getLinks() {
+    public List<LinkTrans> getLinks() {
         
         return linkList == null ? linkList = buildTrans(meta.getLinks()) : linkList;
     }
     
+
     public String getAlias() {
         
         return this.alias;
     }
     
-    private List<ColumnTrans> buildTrans(IteratorableHashMap<String, ColumnMetadata> cols) {
+    private List<LinkTrans> buildTrans(List<LinkMetadata> links) {
+        
+        List<LinkTrans> result = new ArrayList<>();
+        for(LinkMetadata link : links) 
+            result.add(new LinkTrans(link));
+        return result;
+    }
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private List<ColumnTrans> buildTrans(IteratorableHashMap cols) {
         
         List<ColumnTrans> result = new ArrayList<ColumnTrans>();
         Map.Entry<String, ColumnMetadata> entry = null;
         Iterator<Map.Entry<String, ColumnMetadata>> it = cols.entrySet().iterator();
         while(it.hasNext()) {
             entry = it.next();
-            result.add(new ColumnTrans(entry.getKey(), entry.getValue()));
+            result.add(new ColumnTrans(entry.getValue()));
         }
         return result;
     }

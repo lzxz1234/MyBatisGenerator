@@ -17,8 +17,6 @@ package com.chn.mybatis.gen.def;
  */
 public class ColumnMetadata {
 
-    private TableMetadata tableMetadata;
-    
     private String  tableCat         ;//TABLE_CAT
     private String  tableSchema      ;//TABLE_SCHEM
     private String  tableName        ;//TABLE_NAME
@@ -159,12 +157,6 @@ public class ColumnMetadata {
     }
     public void setIsAutoincrement(String isAutoincrement) {
         this.isAutoincrement = isAutoincrement;
-    }
-    public TableMetadata getTableMetadata() {
-        return tableMetadata;
-    }
-    public void setTableMetadata(TableMetadata tableMetadata) {
-        this.tableMetadata = tableMetadata;
     }
     
 }
