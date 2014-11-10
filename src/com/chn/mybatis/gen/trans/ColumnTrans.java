@@ -22,11 +22,13 @@ public class ColumnTrans extends Trans {
 
     private String alias;
     private ColumnMetadata meta;
+    private TableTrans trans;
     
     public ColumnTrans(ColumnMetadata meta) {
         
         this.meta = meta;
         this.alias = this.createColumnAlias();
+        this.trans = TableTrans.find(meta.getTableName());
     }
     
     public String getUpperStartFieldName() {
@@ -42,7 +44,12 @@ public class ColumnTrans extends Trans {
     
     public TableTrans getTableTrans() {
 
-        return TableTrans.find(meta.getTableName());
+        return trans;
+    }
+    
+    public void setTableTrans(TableTrans trans) {
+        
+        this.trans = trans;
     }
     
     public String getJdbcType() {
@@ -58,6 +65,11 @@ public class ColumnTrans extends Trans {
     public String getName() {
         
         return meta.getColumnName();
+    }
+    
+    public String getTableName() {
+        
+        return meta.getTableName();
     }
     
     public String getAlias() {

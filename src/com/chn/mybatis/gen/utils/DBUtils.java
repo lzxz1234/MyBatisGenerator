@@ -132,7 +132,9 @@ public class DBUtils {
         ColumnMetadata fromColumn = TableMetadata.find(tableName).getColumn(columnName);
         ColumnMetadata toColumn = TableMetadata.find(targetTableName).getColumn(targetColumnName);
         
-        TableMetadata.find(tableName).addLink(new LinkMetadata(fromColumn, toColumn));
+        LinkMetadata link = new LinkMetadata(fromColumn, toColumn);
+        TableMetadata.find(fromColumn.getTableName()).addLink(link);
+        TableMetadata.find(toColumn.getTableName()).addLinkBy(link);
         log.info(String.format("  表【%s】中的列【%s】引用表【%s】的列【%s】", 
                 tableName, columnName, targetTableName, targetColumnName));
     }

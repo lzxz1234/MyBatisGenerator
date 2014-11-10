@@ -55,12 +55,19 @@ public class TableMetadata {
     private IteratorableHashMap<String, PKColumnMetadata> keys = new IteratorableHashMap<>();
     private IteratorableHashMap<String, ColumnMetadata> columns = new IteratorableHashMap<>();
     private List<LinkMetadata> links = new ArrayList<>();
+    private List<LinkMetadata> linkBys = new ArrayList<>();
     
     public void addLink(LinkMetadata link) {
         this.links.add(link);
     }
     public List<LinkMetadata> getLinks() {
         return this.links;
+    }
+    public void addLinkBy(LinkMetadata linkBy) {
+        this.linkBys.add(linkBy);
+    }
+    public List<LinkMetadata> getLinkBys() {
+        return this.linkBys;
     }
     public void addKey(PKColumnMetadata key) {
         this.keys.put(key.getColumnName(), key);

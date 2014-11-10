@@ -15,6 +15,11 @@ public class ${table.upperStartClassName} {
            var targetTable = eachColumn.targetTableTrans; %>
     private ${targetTable.upperStartClassName} ${targetTable.lowerStartClassName};
 <%     } %>
+<%     for(eachColumn in table.linkBys) {
+           var fromTable = eachColumn.fromTableTrans; %>
+    private List<${fromTable.upperStartClassName }> ${fromTable.lowerStartClassName }List;
+<%     } %>
+
     <% for(each in table.keys) { %>
     public ${each.javaType} get${each.upperStartFieldName}() {
     
@@ -44,5 +49,14 @@ public class ${table.upperStartClassName} {
         this.${targetTable.lowerStartClassName} = ${targetTable.lowerStartClassName};
     }
 <%     } %>
-    
+<%     for(eachColumn in table.linkBys) {
+           var fromTable = eachColumn.fromTableTrans; %>
+    public List<${fromTable.upperStartClassName }> get${fromTable.upperStartClassName }List() {
+        return this.${fromTable.lowerStartClassName }List;
+    }
+    public void set${fromTable.upperStartClassName }List(List<${fromTable.upperStartClassName }> ${fromTable.lowerStartClassName }List) {
+        this.${fromTable.lowerStartClassName }List = ${fromTable.lowerStartClassName }List;
+    }
+<%     } %>
+
 }

@@ -13,15 +13,31 @@
     
     <sql id="colList">
         <trim prefix=",">
-            <% for(column in table.columns) { %>
+<%             for(column in table.columns) { %>
             , ${table.alias}.${column.name} AS ${column.alias}
-<% 
-               } 
+<%             } 
+               for(column in table.keys) { %>
+            , ${table.alias}.${column.name} AS ${column.alias}
+<%             }
                for(eachLink in table.links) { 
-                 var targetTable = eachLink.targetTableTrans;  %>
+                   var targetTable = eachLink.targetTableTrans;  %>
             <if test="link${targetTable.upperStartClassName} != null">
-                <% for(column in targetTable.columns) { %>
+<%                 for(column in targetTable.columns) { %>
                 , ${targetTable.alias}.${column.name} AS ${column.alias}
+<%                 } 
+                   for(column in targetTable.keys) { %>
+                , ${targetTable.alias}.${column.name} AS ${column.alias}
+<%                 } %>
+            </if>
+<%              } 
+                for(eachLink in table.linkBys) { 
+                   var fromTable = eachLink.fromTableTrans;  %>
+            <if test="with${fromTable.upperStartClassName}List != null">
+<%                 for(column in fromTable.columns) { %>
+                , ${fromTable.alias}.${column.name} AS ${column.alias}
+<%                 } 
+                   for(column in fromTable.keys) { %>
+                , ${fromTable.alias}.${column.name} AS ${column.alias}
 <%                 } %>
             </if>
             <% } %>
@@ -33,20 +49,31 @@
         <id column="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
     <% } %>
     <% for(column in table.columns) { %>
-        <column column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
+        <result column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
     <% } %>
 <%     for(eachLink in table.links) { 
            var targetTable = eachLink.targetTableTrans; %>
         <association property="${targetTable.lowerStartClassName}" javaType="${targetTable.upperStartClassName}">
         <% for(key in targetTable.keys) { %>
-            <id column="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
+            <id result="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
         <% } %>
         
         <% for(column in targetTable.columns) { %>
-            <column column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
+            <result column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
         <% } %>
         </association>
-    <% } %>
+<%     } %>
+<%     for(eachLink in table.linkBys) {
+           var fromTable = eachLink.fromTableTrans; %>
+        <collection property="${fromTable.lowerStartClassName}List" ofType="${fromTable.upperStartClassName}">
+        <% for(key in fromTable.keys) { %>
+            <id column="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
+        <% } %>
+        <% for(column in fromTable.columns) { %>
+            <result column="${column.alias}" javaType="${column.javaType}" jdbcType="${column.jdbcType}" property="${column.lowerStartFieldName}"/>
+        <% } %>
+        </collection>
+<%     } %>
     </resultMap>
     
     <select id="get" parameterType="int" resultMap="result">
@@ -89,10 +116,12 @@
         SELECT <include refid="colList" />
           FROM ${table.name} ${table.alias}
 <%          for(eachLink in table.links) { 
-             var targetTable = eachLink.targetTableTrans; %>
-        <if test="link${targetTable.upperStartClassName} != null">
-     LEFT JOIN ${targetTable.name } ${targetTable.alias} ON ${table.alias}.${eachLink.fromColumnName}=${targetTable.alias}.${eachLink.toColumnName}
-        </if>
+                var targetTable = eachLink.targetTableTrans; %>
+        <if test="link${targetTable.upperStartClassName} != null">LEFT JOIN ${targetTable.name } ${targetTable.alias} ON ${table.alias}.${eachLink.fromColumnName}=${targetTable.alias}.${eachLink.toColumnName}</if>
+<%           } %>
+<%          for(eachLink in table.linkBys) {
+                var fromTable = eachLink.fromTableTrans; %>
+        <if test="with${fromTable.upperStartClassName}List != null" >LEFT JOIN ${fromTable.name} ${fromTable.alias} ON ${table.alias}.${eachLink.toColumnName}=${fromTable.alias}.${eachLink.fromColumnName}</if>
 <%           } %>
         <where>
             <% for(key in table.keys) { %>

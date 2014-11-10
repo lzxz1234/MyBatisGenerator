@@ -33,7 +33,8 @@ public class TableTrans extends Trans {
     private String alias;
     private TableMetadata meta;
     
-    private List<LinkTrans> linkList;
+    private List<LinkTrans> linkList;//Fom 是自己
+    private List<LinkTrans> linkByList;//To 是自己
     private List<ColumnTrans> keyList;
     private List<ColumnTrans> columnList;
     
@@ -52,6 +53,12 @@ public class TableTrans extends Trans {
             map.put(meta.getTableName(), result);
         }
         return result;
+    }
+    
+    public static TableTrans forceNew(String tableName) {
+        
+        TableMetadata meta = TableMetadata.find(tableName);
+        return new TableTrans(meta);
     }
     
     public String getUpperStartClassName() {
@@ -83,6 +90,11 @@ public class TableTrans extends Trans {
     public List<LinkTrans> getLinks() {
         
         return linkList == null ? linkList = buildTrans(meta.getLinks()) : linkList;
+    }
+    
+    public List<LinkTrans> getLinkBys() {
+        
+        return linkByList == null ? linkByList = buildTrans(meta.getLinkBys()) : linkByList;
     }
     
 
