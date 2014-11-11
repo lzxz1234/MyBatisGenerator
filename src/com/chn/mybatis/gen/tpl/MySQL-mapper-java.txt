@@ -4,6 +4,7 @@ import ${package}.vo.*;
 import java.util.*;
 import java.sql.*;
 
+@SuppressWarnings("unused")
 public interface ${table.upperStartClassName }Mapper {
     <% 
        var idStr = "";
