@@ -49,7 +49,7 @@ public class SqlTypeUtils {
         }
     }
     
-    /*public static String decodeToName(int type) {
+    public static String decodeToName(int type) {
         
         switch(type) {
         case Types.BIT           : return "BIT          ".trim();
@@ -91,6 +91,6 @@ public class SqlTypeUtils {
         default:
             throw new RuntimeException(String.format("未知的数据类型[%s]", type));
         }
-    }*/
+    }
     
 }

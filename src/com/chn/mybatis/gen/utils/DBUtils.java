@@ -168,7 +168,8 @@ public class DBUtils {
         column.setTableName        (rs.getString("TABLE_NAME        ".trim()));
         column.setColumnName       (rs.getString("COLUMN_NAME       ".trim()));
         column.setDataType         (rs.getInt   ("DATA_TYPE         ".trim()));
-        column.setTypeName         (rs.getString("TYPE_NAME         ".trim()));
+//      column.setTypeName         (rs.getString("TYPE_NAME         ".trim()));
+        column.setTypeName         (SqlTypeUtils.decodeToName(column.getDataType()));
         column.setColumnSize       (rs.getInt   ("COLUMN_SIZE       ".trim()));
         column.setDecimalDigits    (rs.getInt   ("DECIMAL_DIGITS    ".trim()));
         column.setNumPrecRadix     (rs.getInt   ("NUM_PREC_RADIX    ".trim()));

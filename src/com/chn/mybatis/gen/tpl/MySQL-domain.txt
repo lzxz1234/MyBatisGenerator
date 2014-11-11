@@ -2,6 +2,7 @@ package ${package}.vo;
 
 import java.util.*;
 import java.sql.*;
+import java.util.Date;
 
 public class ${table.upperStartClassName} {
     <% for(each in table.keys) { %>
@@ -42,7 +43,7 @@ public class ${table.upperStartClassName} {
     <% } %>
 <%     for(eachColumn in table.links) { 
            var targetTable = eachColumn.targetTableTrans; %>
-    public ${targetTable.upperStartClassName} get${targetTable.upperStartClassName} {
+    public ${targetTable.upperStartClassName} get${targetTable.upperStartClassName}() {
         return this.${targetTable.lowerStartClassName};
     }
     public void set${targetTable.upperStartClassName}(${targetTable.upperStartClassName} ${targetTable.lowerStartClassName}) {

@@ -34,7 +34,7 @@ public class Main {
     public static final File GEN_FOLDER = new File(ROOT_FILE_PATH + "../gen");
     public static final File VO_FOLDER = new File(GEN_FOLDER, "vo");
     
-    public static final String GEN_PACKAGE = "com.chn.mapper";
+    public static final String GEN_PACKAGE = "com.chn.xietong.web.mapper";
     public static final GroupTemplate group = new GroupTemplate(new File(PACKAGE_PATH));
     
     public static void main(String[] args) throws Exception {

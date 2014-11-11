@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>   
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="${package}.${table.upperStartClassName}">
+<mapper namespace="${package}.${table.upperStartClassName}Mapper">
     
     <sql id="pkCondition">
-        <trim prefix="AND">
+        <trim prefix="" prefixOverrides="AND">
             <% for(key in table.keys) { %>
                 AND ${table.alias}.${key.name} = #{${key.lowerStartFieldName}}
             <% } %>
@@ -12,7 +12,7 @@
     </sql>
     
     <sql id="colList">
-        <trim prefix=",">
+        <trim prefix="" prefixOverrides=",">
 <%             for(column in table.columns) { %>
             , ${table.alias}.${column.name} AS ${column.alias}
 <%             } 
@@ -55,7 +55,7 @@
            var targetTable = eachLink.targetTableTrans; %>
         <association property="${targetTable.lowerStartClassName}" javaType="${targetTable.upperStartClassName}">
         <% for(key in targetTable.keys) { %>
-            <id result="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
+            <id column="${key.alias}" javaType="${key.javaType}" jdbcType="${key.jdbcType}" property="${key.lowerStartFieldName}"/>
         <% } %>
         
         <% for(column in targetTable.columns) { %>
@@ -83,8 +83,8 @@
     </select>
     
     <update id="set" parameterType="${table.upperStartClassName}">
-        UPDATE ${table.name} SET 
-            <trim prefix=",">
+        UPDATE ${table.name} ${table.alias} SET 
+            <trim prefix="" prefixOverrides=",">
                 <% for(column in table.columns) { %>
                     , ${column.name} = #{${column.lowerStartFieldName}}
                 <% } %>
@@ -94,13 +94,13 @@
     
     <insert id="add" parameterType="${table.upperStartClassName}" <% if(table.keys.~size == 1) {%>useGeneratedKeys="true" keyProperty="${table.keys[0].name}" <% } %>>
         INSERT INTO ${table.name} (
-            <trim prefix=",">
+            <trim prefix="" prefixOverrides=",">
                 <% for(column in table.columns) { %>
                     , ${column.name}
                 <% } %>
             </trim>
         ) VALUES (
-            <trim prefix=",">
+            <trim prefix="" prefixOverrides=",">
                 <% for(column in table.columns) { %>
                     , #{${column.lowerStartFieldName}}
                 <% } %>
@@ -109,7 +109,7 @@
     </insert>
     
     <delete id="remove" parameterType="int">
-        DELETE FROM ${table.name} WHERE <include refid="pkCondition"/>
+        DELETE ${table.alias} FROM ${table.name} ${table.alias} WHERE <include refid="pkCondition"/>
     </delete>
     
     <select id="list" parameterType="map" resultMap="result">
