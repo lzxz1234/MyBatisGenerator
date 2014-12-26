@@ -6,14 +6,13 @@ MyBatisGenerator
 1. 修改 config.properties 配置文件为正确数据库连接
 2. 执行 com.chn.mybatis.gen.Main，会在项目目录下的 gen 目录下生成结果文件，基本目录结构如下
    
-
-    project
-    |---src
-    |---gen
-       |---vo
-       |   |--User.java
-       |---UserMapper.java
-       |---UserMapper.xml
+	    project
+	    |---src
+	    |---gen
+	       |---vo
+	       |   |--User.java
+	       |---UserMapper.java
+	       |---UserMapper.xml
 
 目标文件格式
 -------

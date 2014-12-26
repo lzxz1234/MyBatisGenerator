@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -58,6 +57,7 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+classes
 .classpath
 .project
 /.settings
