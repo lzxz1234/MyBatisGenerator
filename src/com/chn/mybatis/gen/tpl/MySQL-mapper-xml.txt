@@ -77,7 +77,16 @@
     </resultMap>
     
     <select id="get" parameterType="int" resultMap="result">
-        SELECT <include refid="colList" />
+        SELECT <trim prefix="" prefixOverrides=",">
+<%             for(column in table.columns) { %>
+            , ${table.alias}.${column.name} AS ${column.alias}
+<%             } 
+               for(column in table.keys) { %>
+            , ${table.alias}.${column.name} AS ${column.alias}
+<%             }%>
+            </if>
+            <% } %>
+        </trim>
           FROM ${table.name} ${table.alias} 
          WHERE <include refid="pkCondition"/>
     </select>
