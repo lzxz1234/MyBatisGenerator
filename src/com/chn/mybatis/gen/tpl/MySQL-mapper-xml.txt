@@ -84,8 +84,6 @@
                for(column in table.keys) { %>
             , ${table.alias}.${column.name} AS ${column.alias}
 <%             }%>
-            </if>
-            <% } %>
         </trim>
           FROM ${table.name} ${table.alias} 
          WHERE <include refid="pkCondition"/>
