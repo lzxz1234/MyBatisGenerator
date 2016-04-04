@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title SqlTypeUtils.java
  * @package com.chn.mybatis.gen.utils
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ6ÈÕ-ÏÂÎç6:52:22
+ * @date 2014å¹´11æœˆ6æ—¥-ä¸‹åˆ6:52:22
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -45,7 +45,7 @@ public class SqlTypeUtils {
         case Types.CLOB          : return "Clob";
         case Types.BOOLEAN       : return "Boolean";
         default:
-            throw new RuntimeException(String.format("Î´ÖªµÄÊı¾İÀàĞÍ[%s]", type));
+            throw new RuntimeException(String.format("æœªçŸ¥çš„æ•°æ®ç±»å‹[%s]", type));
         }
     }
     
@@ -89,7 +89,7 @@ public class SqlTypeUtils {
         case Types.NCLOB         : return "NCLOB        ".trim();
         case Types.SQLXML        : return "SQLXML       ".trim();
         default:
-            throw new RuntimeException(String.format("Î´ÖªµÄÊı¾İÀàĞÍ[%s]", type));
+            throw new RuntimeException(String.format("æœªçŸ¥çš„æ•°æ®ç±»å‹[%s]", type));
         }
     }
     

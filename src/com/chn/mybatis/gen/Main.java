@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title Main.java
  * @package com.chn.mybatis.gen
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ6ÈÕ-ÏÂÎç6:42:09
+ * @date 2014å¹´11æœˆ6æ—¥-ä¸‹åˆ6:42:09
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -55,7 +55,7 @@ public class Main {
     private static void generateXml(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-mapper-xml.txt");
-        if(template == null) throw new RuntimeException(String.format("Î´Ö§³ÖµÄÊı¾İ¿âÀàĞÍ¡¾%s¡¿", dbType));
+        if(template == null) throw new RuntimeException(String.format("æœªæ”¯æŒçš„æ•°æ®åº“ç±»å‹ã€%sã€‘", dbType));
         
         TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);
@@ -67,7 +67,7 @@ public class Main {
     private static void generateInterface(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-mapper-java.txt");
-        if(template == null) throw new RuntimeException(String.format("Î´Ö§³ÖµÄÊı¾İ¿âÀàĞÍ¡¾%s¡¿", dbType));
+        if(template == null) throw new RuntimeException(String.format("æœªæ”¯æŒçš„æ•°æ®åº“ç±»å‹ã€%sã€‘", dbType));
         
         TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);
@@ -79,7 +79,7 @@ public class Main {
     private static void generateDomain(String tableName, String dbType) throws Exception {
         
         Template template = group.getFileTemplate(dbType + "-domain.txt");
-        if(template == null) throw new RuntimeException(String.format("Î´Ö§³ÖµÄÊı¾İ¿âÀàĞÍ¡¾%s¡¿", dbType));
+        if(template == null) throw new RuntimeException(String.format("æœªæ”¯æŒçš„æ•°æ®åº“ç±»å‹ã€%sã€‘", dbType));
         
         TableTrans trans = TableTrans.find(tableName);
         template.set("package", GEN_PACKAGE);

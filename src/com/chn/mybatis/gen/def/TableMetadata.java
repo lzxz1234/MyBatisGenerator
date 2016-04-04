@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title TableMetadata.java
  * @package com.chn.mybatis.gen.def
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ6ÈÕ-ÏÂÎç11:00:44
+ * @date 2014å¹´11æœˆ6æ—¥-ä¸‹åˆ11:00:44
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -90,7 +90,7 @@ public class TableMetadata {
         if(result == null) 
             result = this.keys.get(name);
         if(result == null) 
-            throw new RuntimeException(String.format("±í¡¾%s¡¿²»´æÔÚÁĞ¡¾%s¡¿", this.getTableName(), name));
+            throw new RuntimeException(String.format("è¡¨ã€%sã€‘ä¸å­˜åœ¨åˆ—ã€%sã€‘", this.getTableName(), name));
         return result;
     }
     

@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title PKColumnMetadata.java
  * @package com.chn.mybatis.gen.def
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ10ÈÕ-ÉÏÎç10:55:01
+ * @date 2014å¹´11æœˆ10æ—¥-ä¸Šåˆ10:55:01
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */

@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title DBUtils.java
  * @package com.chn.mybatis.gen.utils
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ6ÈÕ-ÏÂÎç5:30:32
+ * @date 2014å¹´11æœˆ6æ—¥-ä¸‹åˆ5:30:32
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -42,7 +42,7 @@ public class DBUtils {
     
     public static Connection getConn() {
         
-        log.info("³õÊ¼»¯Êı¾İ¿â¡¾¿ªÊ¼¡¿");
+        log.info("åˆå§‹åŒ–æ•°æ®åº“ã€å¼€å§‹ã€‘");
         
         Connection conn = null;
         Cfg cfg = ConfigUtils.getCfg(CONFIG_FILE);
@@ -50,10 +50,10 @@ public class DBUtils {
         String url      = cfg.get(KEY_URL);
         String username = cfg.get(KEY_USERNAME);
         String password = cfg.get(KEY_PASSWORD);
-        log.info(String.format("  ¼ÓÔØÅäÖÃÏîdriver  £º%s", driver  ));
-        log.info(String.format("  ¼ÓÔØÅäÖÃÏîurl     £º%s", url     ));
-        log.info(String.format("  ¼ÓÔØÅäÖÃÏîusername£º%s", username));
-        log.info(String.format("  ¼ÓÔØÅäÖÃÏîpassword£º%s", password));
+        log.info(String.format("  åŠ è½½é…ç½®é¡¹driver  ï¼š%s", driver  ));
+        log.info(String.format("  åŠ è½½é…ç½®é¡¹url     ï¼š%s", url     ));
+        log.info(String.format("  åŠ è½½é…ç½®é¡¹usernameï¼š%s", username));
+        log.info(String.format("  åŠ è½½é…ç½®é¡¹passwordï¼š%s", password));
         
         try {
             
@@ -61,12 +61,12 @@ public class DBUtils {
             conn = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException e) {
             
-            throw new RuntimeException(String.format("[JDBCÇı¶¯¼ÓÔØ´íÎó][%s]", driver), e);
+            throw new RuntimeException(String.format("[JDBCé©±åŠ¨åŠ è½½é”™è¯¯][%s]", driver), e);
         } catch (SQLException e) {
             
-            throw new RuntimeException(String.format("[Êı¾İ¿âÁ¬½ÓÊ§°Ü]"), e);
+            throw new RuntimeException(String.format("[æ•°æ®åº“è¿æ¥å¤±è´¥]"), e);
         }
-        log.info("³õÊ¼»¯Êı¾İ¿â¡¾Íê³É¡¿£¡");
+        log.info("åˆå§‹åŒ–æ•°æ®åº“ã€å®Œæˆã€‘ï¼");
         return conn;
     }
     
@@ -78,7 +78,7 @@ public class DBUtils {
             dbmd = conn.getMetaData();
             rs = dbmd.getTypeInfo();
             while (rs.next()) {
-                log.info(String.format("ÀàĞÍÃû³Æ¡¾%s¡¿ JavaType¡¾%s¡¿×î´ó¾«¶È¡¾%s¡¿",
+                log.info(String.format("ç±»å‹åç§°ã€%sã€‘ JavaTypeã€%sã€‘æœ€å¤§ç²¾åº¦ã€%sã€‘",
                         rs.getString(1), SqlTypeUtils.decodeToJavaType(rs.getInt(2)), rs.getString(3)));
             }
 
@@ -86,11 +86,11 @@ public class DBUtils {
             String dbVersion = dbmd.getDatabaseProductVersion();
             String driverName = dbmd.getDriverName();
             String driverVersion = dbmd.getDriverVersion();
-            log.info(String.format("Êı¾İ¿âÀàĞÍ¡¾%s¡¿Êı¾İ¿â°æ±¾¡¾%s¡¿Êı¾İ¿âÇı¶¯Ãû³Æ¡¾%s¡¿Êı¾İ¿âÇı¶¯³ÌĞò°æ±¾¡¾%s¡¿", 
+            log.info(String.format("æ•°æ®åº“ç±»å‹ã€%sã€‘æ•°æ®åº“ç‰ˆæœ¬ã€%sã€‘æ•°æ®åº“é©±åŠ¨åç§°ã€%sã€‘æ•°æ®åº“é©±åŠ¨ç¨‹åºç‰ˆæœ¬ã€%sã€‘", 
                     dbType, dbVersion, driverName, driverVersion));
 
         } catch (SQLException e) {
-            throw new RuntimeException("»ñÈ¡ÔªÊı¾İ³ö´í", e);
+            throw new RuntimeException("è·å–å…ƒæ•°æ®å‡ºé”™", e);
         }
         return dbmd;
     }
@@ -118,7 +118,7 @@ public class DBUtils {
                     solveForeignKey(rs);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("»ñÈ¡±íĞÅÏ¢³ö´í", e);
+            throw new RuntimeException("è·å–è¡¨ä¿¡æ¯å‡ºé”™", e);
         }
     }
     
@@ -135,7 +135,7 @@ public class DBUtils {
         LinkMetadata link = new LinkMetadata(fromColumn, toColumn);
         TableMetadata.find(fromColumn.getTableName()).addLink(link);
         TableMetadata.find(toColumn.getTableName()).addLinkBy(link);
-        log.info(String.format("  ±í¡¾%s¡¿ÖĞµÄÁĞ¡¾%s¡¿ÒıÓÃ±í¡¾%s¡¿µÄÁĞ¡¾%s¡¿", 
+        log.info(String.format("  è¡¨ã€%sã€‘ä¸­çš„åˆ—ã€%sã€‘å¼•ç”¨è¡¨ã€%sã€‘çš„åˆ—ã€%sã€‘", 
                 tableName, columnName, targetTableName, targetColumnName));
     }
     
@@ -147,7 +147,7 @@ public class DBUtils {
         TableMetadata tableMetadata = TableMetadata.find(tableName);
         ColumnMetadata keyColumn = tableMetadata.getColumns().remove(columnName);
         tableMetadata.getKeys().put(columnName, PKColumnMetadata.from(keyColumn));
-        log.debug(String.format("  ±í¡¾%s¡¿ÖĞµÄ¡¾%s¡¿ÁĞ±ê¼ÇÎªÖ÷¼ü", tableName, columnName));
+        log.debug(String.format("  è¡¨ã€%sã€‘ä¸­çš„ã€%sã€‘åˆ—æ ‡è®°ä¸ºä¸»é”®", tableName, columnName));
     }
     
     private static void solveTable(ResultSet rs) throws SQLException {
@@ -157,7 +157,7 @@ public class DBUtils {
         table.setTableSchema(rs.getString("TABLE_SCHEM".trim()));
         table.setTableType  (rs.getString("TABLE_TYPE ".trim()));
         table.setRemarks    (rs.getString("REMARKS    ".trim()));
-        log.debug(String.format("  ·¢ÏÖ±í¡¾%s¡¿", table.getTableName()));
+        log.debug(String.format("  å‘ç°è¡¨ã€%sã€‘", table.getTableName()));
     }
     
     private static void solveColumn(ResultSet rs) throws SQLException {
@@ -186,7 +186,7 @@ public class DBUtils {
         column.setIsAutoincrement  (rs.getString("IS_AUTOINCREMENT  ".trim()));
         TableMetadata targetTable = TableMetadata.find(column.getTableName());
         targetTable.addColumn(column);
-        log.debug(String.format("  ±í¡¾%s¡¿·¢ÏÖÁĞ¡¾%s¡¿£¬ÁĞÀàĞÍÎª¡¾%s¡¿", 
+        log.debug(String.format("  è¡¨ã€%sã€‘å‘ç°åˆ—ã€%sã€‘ï¼Œåˆ—ç±»å‹ä¸ºã€%sã€‘", 
                 column.getTableName(), column.getColumnName(), column.getTypeName()));
     }
 }

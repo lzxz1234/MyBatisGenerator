@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title IteratorableHashMap.java
  * @package com.chn.mybatis.gen.utils
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ7ÈÕ-ÉÏÎç9:21:39
+ * @date 2014å¹´11æœˆ7æ—¥-ä¸Šåˆ9:21:39
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */

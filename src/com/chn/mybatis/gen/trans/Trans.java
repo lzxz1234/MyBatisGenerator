@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title Trans.java
  * @package com.chn.mybatis.gen.trans
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ7ÈÕ-ÏÂÎç4:31:23
+ * @date 2014å¹´11æœˆ7æ—¥-ä¸‹åˆ4:31:23
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */

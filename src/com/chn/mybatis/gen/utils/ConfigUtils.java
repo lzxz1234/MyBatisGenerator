@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title ConfigUtils.java
  * @package com.chn.mybatis.gen.utils
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ6ÈÕ-ÏÂÎç5:31:19
+ * @date 2014å¹´11æœˆ6æ—¥-ä¸‹åˆ5:31:19
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */

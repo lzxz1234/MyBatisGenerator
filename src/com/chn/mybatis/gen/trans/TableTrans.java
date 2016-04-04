@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title TableTrans.java
  * @package com.chn.mybatis.gen.trans
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ7ÈÕ-ÉÏÎç9:00:03
+ * @date 2014å¹´11æœˆ7æ—¥-ä¸Šåˆ9:00:03
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -33,8 +33,8 @@ public class TableTrans extends Trans {
     private String alias;
     private TableMetadata meta;
     
-    private List<LinkTrans> linkList;//Fom ÊÇ×Ô¼º
-    private List<LinkTrans> linkByList;//To ÊÇ×Ô¼º
+    private List<LinkTrans> linkList;//Fom æ˜¯è‡ªå·±
+    private List<LinkTrans> linkByList;//To æ˜¯è‡ªå·±
     private List<ColumnTrans> keyList;
     private List<ColumnTrans> columnList;
     

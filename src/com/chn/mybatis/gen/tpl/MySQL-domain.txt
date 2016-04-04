@@ -1,4 +1,4 @@
-package ${package}.vo;
+﻿package ${package}.vo;
 
 import java.util.*;
 import java.sql.*;

@@ -1,9 +1,9 @@
-/**
+ï»¿/**
  * MyBatisGenerator
  * @title LinkTrans.java
  * @package com.chn.mybatis.gen.trans
  * @author lzxz1234<lzxz1234@gmail.com>
- * @date 2014Äê11ÔÂ10ÈÕ-ÏÂÎç2:24:31
+ * @date 2014å¹´11æœˆ10æ—¥-ä¸‹åˆ2:24:31
  * @version V1.0
  * Copyright (c) 2014 ChineseAll.com All Right Reserved
  */
@@ -26,7 +26,7 @@ public class LinkTrans extends Trans {
         
         this.from = from;
         this.to = to;
-        //×Ô¼º¶Ô×Ô¼ºµÄÁ¬½Ó£¬ĞèÒª¸üĞÂ±ğÃû
+        //è‡ªå·±å¯¹è‡ªå·±çš„è¿æ¥ï¼Œéœ€è¦æ›´æ–°åˆ«å
         if(this.from.getTableTrans() == this.to.getTableTrans()) {
             this.from.setTableTrans(TableTrans.forceNew(from.getTableName()));
             this.to.setTableTrans(TableTrans.forceNew(to.getTableName()));
