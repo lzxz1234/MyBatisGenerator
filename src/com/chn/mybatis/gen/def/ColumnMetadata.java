@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title ColumnMetadata.java
  * @package com.chn.mybatis.gen.def

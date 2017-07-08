@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title Trans.java
  * @package com.chn.mybatis.gen.trans

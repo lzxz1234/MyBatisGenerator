@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title TableTrans.java
  * @package com.chn.mybatis.gen.trans
@@ -63,12 +63,12 @@ public class TableTrans extends Trans {
     
     public String getUpperStartClassName() {
         
-        return underscoreToCamelCase(meta.getTableName());
+        return underscoreToCamelCase(meta.getTableName().substring(2));
     }
     
     public String getLowerStartClassName() {
         
-        String camelCase = underscoreToCamelCase(meta.getTableName());
+        String camelCase = underscoreToCamelCase(meta.getTableName().substring(2));
         return camelCase.substring(0,1).toLowerCase() + camelCase.substring(1);
     }
     

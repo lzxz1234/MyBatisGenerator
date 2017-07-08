@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title ConfigUtils.java
  * @package com.chn.mybatis.gen.utils

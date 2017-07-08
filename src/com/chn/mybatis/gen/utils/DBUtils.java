@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title DBUtils.java
  * @package com.chn.mybatis.gen.utils

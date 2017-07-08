@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title IteratorableHashMap.java
  * @package com.chn.mybatis.gen.utils

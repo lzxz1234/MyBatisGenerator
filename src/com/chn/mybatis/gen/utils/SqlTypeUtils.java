@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title SqlTypeUtils.java
  * @package com.chn.mybatis.gen.utils

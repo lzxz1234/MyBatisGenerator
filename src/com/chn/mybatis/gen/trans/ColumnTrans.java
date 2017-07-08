@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MyBatisGenerator
  * @title ColumnTrans.java
  * @package com.chn.mybatis.gen.trans
