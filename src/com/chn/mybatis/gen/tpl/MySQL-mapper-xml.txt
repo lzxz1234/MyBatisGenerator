@@ -102,12 +102,18 @@
     <insert id="add" parameterType="${table.upperStartClassName}" <% if(table.keys.~size == 1) {%>useGeneratedKeys="true" keyProperty="${table.keys[0].name}" <% } %>>
         INSERT INTO ${table.name} (
             <trim prefix="" prefixOverrides=",">
+                <% for(column in table.keys) { %>
+                    , ${column.name}
+                <% } %>
                 <% for(column in table.columns) { %>
                     , ${column.name}
                 <% } %>
             </trim>
         ) VALUES (
             <trim prefix="" prefixOverrides=",">
+                <% for(column in table.keys) { %>
+                    , #{${column.lowerStartFieldName}}
+                <% } %>
                 <% for(column in table.columns) { %>
                     , #{${column.lowerStartFieldName}}
                 <% } %>
